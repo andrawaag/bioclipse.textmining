@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pubmed
+Bundle-SymbolicName: net.bioclipse.pubmed; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.bioclipse.pubmed.Activator
+Export-Package: net.bioclipse.pubmed, net.bioclipse.pubmed.business
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.bioclipse.core,
+ net.bioclipse.scripting,
+ org.springframework.bundle.spring.aop,
+ net.sf.cglib,
+ org.springframework.osgi.aopalliance.osgi
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.log4j
+Bundle-ActivationPolicy: lazy
