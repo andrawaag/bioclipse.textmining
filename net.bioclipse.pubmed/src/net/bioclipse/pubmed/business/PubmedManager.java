@@ -11,10 +11,15 @@
 package net.bioclipse.pubmed.business;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.managers.business.IBioclipseManager;
@@ -26,6 +31,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
  
 
 public class PubmedManager implements IBioclipseManager {
@@ -66,9 +74,30 @@ public class PubmedManager implements IBioclipseManager {
     	
     }
     
+    public String getFullTextLink(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+    	if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Searching full text link " + pmid + " from PubMed (Eutils).", 2
+		);
+		URL url = new URL("http://www.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&id=" + Integer.toString(pmid) + "&retmode=xml&cmd=prlinks");
+		
+
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(url.openStream());
+        NodeList urlList = doc.getElementsByTagName("Url");
+        String returnUrl = urlList.item(0).getTextContent();
+    	return returnUrl;
+    	
+    }
+    
+    
     public int loadPubMedEntryInBrowser(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
-        
-        IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport().createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR, null,"Expert Viewer", "Validation");
+
+        IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport().createBrowser(IWorkbenchBrowserSupport.AS_EDITOR, null,"Expert Viewer", "Validation");
         browser.openURL(new URL("http://www.ncbi.nlm.nih.gov/pubmed/"+pmid));
 
 

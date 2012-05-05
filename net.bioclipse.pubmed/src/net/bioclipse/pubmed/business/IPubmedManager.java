@@ -36,6 +36,15 @@ public interface IPubmedManager extends IBioclipseManager {
 	  @Recorded
 	  @PublishedMethod(
 	        params = "int pmid", 
+	        methodSummary = "Get full text link if available"
+	        	
+	    )
+	public String getFullTextLink(int pmid)
+    throws IOException, BioclipseException, CoreException;
+	  
+	  @Recorded
+	  @PublishedMethod(
+	        params = "int pmid", 
 	        methodSummary = "Loads the PubMed entry from a given pmid as XML"
 	        	
 	    )
