@@ -132,7 +132,9 @@ public class PubmedManager implements IBioclipseManager {
     }
     
     
-    public String findPubmedIdentifiers(String pubmedQuery, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
+    public String findPubmedIdentifiers(String pubmedQuery, int retMax, int retStart, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
+   
+    	
     	if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
@@ -140,7 +142,7 @@ public class PubmedManager implements IBioclipseManager {
 		monitor.beginTask(
 				"Querying PubMed: \"" + pubmedQuery + "\" from PubMed (Eutils).", 2
 		);
-		URL url = new URL("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=" + pubmedQuery + "&retmode=xml");
+		URL url = new URL("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=" + pubmedQuery + "&retmode=xml&retmax="+Integer.toString(retMax)+"&retstart="+Integer.toString(retStart));
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(
 						url.openConnection().getInputStream()
@@ -153,6 +155,24 @@ public class PubmedManager implements IBioclipseManager {
 			line = reader.readLine();
 			
 		}
+    	
+    	return pubmedString;
+    	
+    }
+    
+    public String findPubmedIdentifiers(String pubmedQuery, int retMax, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
+    	   
+    	
+        String pubmedString = this.findPubmedIdentifiers(pubmedQuery, retMax, 0, monitor);
+     	
+     	return pubmedString;
+     	
+     }
+    
+ public String findPubmedIdentifiers(String pubmedQuery, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
+   
+    	
+       String pubmedString = this.findPubmedIdentifiers(pubmedQuery, 20, monitor);
     	
     	return pubmedString;
     	

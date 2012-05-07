@@ -59,10 +59,28 @@ public interface IPubmedManager extends IBioclipseManager {
 	  @Recorded
 	  @PublishedMethod(
 	        params = "String pubmedQuery", 
-	        methodSummary = "Returns the pubmed Identifiers returned on a pubmed query"
+	        methodSummary = "Returns 20 pubmed Identifiers returned on a pubmed query"
 	        	
 	    )
     public String findPubmedIdentifiers(String pubmedQuery)
+	throws IOException, BioclipseException, CoreException;
+	  
+	  @Recorded
+	  @PublishedMethod(
+	        params = "String pubmedQuery, int retMax", 
+	        methodSummary = "Returns retMax pubmed Identifiers  a pubmed query."
+	        	
+	    )
+    public String findPubmedIdentifiers(String pubmedQuery, int retMax)
+	throws IOException, BioclipseException, CoreException;
+	  
+	  @Recorded
+	  @PublishedMethod(
+	        params = "String pubmedQuery, int retMax, int retStart", 
+	        methodSummary = "Returns retMax pubmed Identifiers, starting at hit retStart returned on a pubmed query"
+	        	
+	    )
+    public String findPubmedIdentifiers(String pubmedQuery, int retMax, int retStart)
 	throws IOException, BioclipseException, CoreException;
 
 	  @Recorded
