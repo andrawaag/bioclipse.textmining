@@ -12,7 +12,11 @@ package net.bioclipse.pubmed.business;
 
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.runtime.CoreException;
+import org.xml.sax.SAXException;
+
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.Recorded;
@@ -30,8 +34,9 @@ public interface IPubmedManager extends IBioclipseManager {
 	        methodSummary = "Loads the PubMed entry from a given pmid as XML"
 	        	
 	    )
-	public String loadPubMedEntry(int pmid)
+	public String getPubMedEntry(int pmid)
     throws IOException, BioclipseException, CoreException;
+	  
 	  
 	  @Recorded
 	  @PublishedMethod(
@@ -60,4 +65,12 @@ public interface IPubmedManager extends IBioclipseManager {
     public String findPubmedIdentifiers(String pubmedQuery)
 	throws IOException, BioclipseException, CoreException;
 
+	  @Recorded
+	  @PublishedMethod(
+	        params = "int pmid", 
+	        methodSummary = "Gets the PubMed abstract from a given pmid."
+	        	
+	    )
+	public String getPubMedAbstract(int pmid)
+    throws IOException, BioclipseException, CoreException;
 }

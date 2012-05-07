@@ -48,7 +48,7 @@ public class PubmedManager implements IBioclipseManager {
         return "pubmed";
     }
     
-    public String loadPubMedEntry(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
+    public String getPubMedEntry(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException{
     	if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
@@ -73,6 +73,32 @@ public class PubmedManager implements IBioclipseManager {
     	return pubmedString;
     	
     }
+    
+    public String getPubMedAbstract(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+    	if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		URL url = new URL("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=" + Integer.toString(pmid) + "&retmode=xml");
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(url.openStream());
+        NodeList pubmedAbstractList = doc.getElementsByTagName("AbstractText");
+        String pubmedAbstract = "";
+        if (pubmedAbstractList.getLength() > 0){
+        
+        for (int i=0; i<pubmedAbstractList.getLength(); i++){
+        	pubmedAbstract = pubmedAbstract + pubmedAbstractList.item(i).getTextContent();
+        }
+        }
+    	
+    	return pubmedAbstract;
+    	
+    }
+    
     
     public String getFullTextLink(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
     	if (monitor == null) {
