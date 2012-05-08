@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.bioclipse.pubmed_feature"
+      label="Bioclipse PubMed Support"
+      version="2.5.0.qualifier"
+      provider-name="Bioclipse Team"
+      plugin="net.bioclipse.pubmed">
+
+   <license>
+      Eclipse Public License.
+   </license>
+
+   <requires>
+      <import feature="net.bioclipse.core_feature" version="2.5.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="net.bioclipse.pubmed"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

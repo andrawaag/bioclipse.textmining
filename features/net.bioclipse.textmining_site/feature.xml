@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.bioclipse.textmining_site"
+      label="Bioclipse Text Mining Update Site"
+      version="1.0.0">
+
+   <description>
+      Tools around text mining in the Bioclipse scripting environment.
+   </description>
+
+   <copyright>
+      Andra Waagmeester et al.
+   </copyright>
+
+   <includes
+         id="net.bioclipse.pubmed_feature"
+         version="0.0.0"/>
+
+   <requires>
+      <import feature="net.bioclipse.core_feature" version="2.5.0"/>
+   </requires>
+
+</feature>
