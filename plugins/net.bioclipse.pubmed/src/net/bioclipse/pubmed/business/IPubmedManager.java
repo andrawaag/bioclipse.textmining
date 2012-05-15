@@ -86,10 +86,19 @@ public interface IPubmedManager extends IBioclipseManager {
 	@Recorded
 	@PublishedMethod(
 			params = "int pmid", 
-			methodSummary = "Gets the PubMed abstract from a given pmid."
+			methodSummary = "Gets the title from a given pmid."
 
 	)
-	public String getPubMedTitle(int pmid)
+	public String getTitle(int pmid)
+	throws IOException, BioclipseException, CoreException;
+	
+	@Recorded
+	@PublishedMethod(
+			params = "int pmid", 
+			methodSummary = "Gets the journal title from a given pmid."
+
+	)
+	public String getJournalTitle(int pmid)
 	throws IOException, BioclipseException, CoreException;
 
 	@Recorded
@@ -98,7 +107,16 @@ public interface IPubmedManager extends IBioclipseManager {
 			methodSummary = "Gets the PubMed abstract from a given pmid."
 
 	)
-	public String getPubMedAbstract(int pmid)
+	public String getAbstract(int pmid)
+	throws IOException, BioclipseException, CoreException;
+	
+	@Recorded
+	@PublishedMethod(
+			params = "int pmid", 
+			methodSummary = "Gets the PubMed abstract from a given pmid."
+
+	)
+	public String getMeshHeadings(int pmid)
 	throws IOException, BioclipseException, CoreException;
 
 }

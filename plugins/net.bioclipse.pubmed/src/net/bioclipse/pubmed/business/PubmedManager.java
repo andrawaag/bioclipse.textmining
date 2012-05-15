@@ -88,7 +88,7 @@ public class PubmedManager implements IBioclipseManager {
 	}
 
 
-	public String getPubMedAbstract(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+	public String getAbstract(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
@@ -107,6 +107,50 @@ public class PubmedManager implements IBioclipseManager {
 		}
 
 		return pubmedAbstract;
+
+	}
+	
+	public String getTitle(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList pubmedTitleList = doc.getElementsByTagName("ArticleTitle");
+		String pubmedTitle = "";
+		if (pubmedTitleList.getLength() > 0){
+
+			for (int i=0; i<pubmedTitleList.getLength(); i++){
+				pubmedTitle = pubmedTitle + pubmedTitleList.item(i).getTextContent();
+			}
+		}
+
+		return pubmedTitle;
+
+	}
+	
+	public String getJournalTitle(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList pubmedJournalList = doc.getElementsByTagName("Title");
+		String pubmedTitle = "";
+		if (pubmedJournalList.getLength() > 0){
+
+			for (int i=0; i<pubmedJournalList.getLength(); i++){
+				pubmedTitle = pubmedTitle + pubmedJournalList.item(i).getTextContent();
+			}
+		}
+
+		return pubmedTitle;
 
 	}
 
@@ -191,7 +235,27 @@ public class PubmedManager implements IBioclipseManager {
 
 
 
+	public String getMeshHeadings(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
 
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList pubmedMeshList = doc.getElementsByTagName("DescriptorName");
+		String pubmedMesh = "";
+		if (pubmedMeshList.getLength() > 0){
+
+			for (int i=0; i<pubmedMeshList.getLength(); i++){
+				pubmedMesh = pubmedMesh + pubmedMeshList.item(i).getTextContent()+", ";
+			}
+		}
+
+		return pubmedMesh;
+
+	}
 
 
 }
