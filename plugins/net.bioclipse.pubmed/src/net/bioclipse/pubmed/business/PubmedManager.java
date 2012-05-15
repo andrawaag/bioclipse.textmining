@@ -109,7 +109,7 @@ public class PubmedManager implements IBioclipseManager {
 		return pubmedAbstract;
 
 	}
-	
+
 	public String getTitle(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -131,7 +131,7 @@ public class PubmedManager implements IBioclipseManager {
 		return pubmedTitle;
 
 	}
-	
+
 	public String getJournalTitle(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -256,7 +256,7 @@ public class PubmedManager implements IBioclipseManager {
 		return pubmedMesh;
 
 	}
-	
+
 	public String getJournalAbbrevation(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -278,7 +278,7 @@ public class PubmedManager implements IBioclipseManager {
 		return isoAbbreviation;
 
 	}
-	
+
 	public String getChemicals(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -294,12 +294,79 @@ public class PubmedManager implements IBioclipseManager {
 
 			for (int i=0; i<chemicalList.getLength(); i++){
 				Element chemicalElement = (Element) chemicalList.item(i);
-				
+
 				chemicals = chemicals + chemicalElement.getElementsByTagName("NameOfSubstance").item(0).getTextContent()+": "+chemicalElement.getElementsByTagName("RegistryNumber").item(0).getTextContent()+"\n";
 			}
 		}
 
 		return chemicals;
+
+	}
+
+	public String getAffiliation(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList affiliationList = doc.getElementsByTagName("Affiliation");
+		String affiliation = "NA";
+		if (affiliationList.getLength() > 0){
+			affiliation = "";
+			for (int i=0; i<affiliationList.getLength(); i++){
+				affiliation = affiliation + affiliationList.item(i).getTextContent();
+			}
+		}
+
+		return affiliation;
+	}
+
+	public String getArticleIdentifiers(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList docIdList = doc.getElementsByTagName("ArticleId");
+		String docIds = "";
+		if (docIdList.getLength() > 0){
+
+			for (int i=0; i<docIdList.getLength(); i++){			
+				docIds = docIds + docIdList.item(i).getAttributes().getNamedItem("IdType").getTextContent()+": "+docIdList.item(i).getTextContent()+"\n";
+			}
+		}
+
+		return docIds;
+
+	}
+
+	public String getDOI(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList docIdList = doc.getElementsByTagName("ArticleId");
+		String docIds = "";
+		if (docIdList.getLength() > 0){
+
+			for (int i=0; i<docIdList.getLength(); i++){	
+				if (docIdList.item(i).getAttributes().getNamedItem("IdType").getTextContent().equals("doi")) {
+					docIds = docIds + docIdList.item(i).getTextContent()+"\n";
+				}
+			}
+		}
+
+		return docIds;
 
 	}
 

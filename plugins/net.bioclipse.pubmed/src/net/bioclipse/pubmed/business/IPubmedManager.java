@@ -137,4 +137,31 @@ public interface IPubmedManager extends IBioclipseManager {
 	)
 	public String getChemicals(int pmid)
 	throws IOException, BioclipseException, CoreException;
+	
+	@Recorded
+	@PublishedMethod(
+			params = "int pmid", 
+			methodSummary = "Gets the affiliation of the corresponding author from a given pmid."
+
+	)
+	public String getAffiliation(int pmid)
+	throws IOException, BioclipseException, CoreException;
+	
+	@Recorded
+	@PublishedMethod(
+			params = "int pmid", 
+			methodSummary = "Gets the affiliation of the corresponding author from a given pmid."
+
+	)
+	public String getArticleIdentifiers(int pmid)
+	throws IOException, BioclipseException, CoreException;
+	
+	@Recorded
+	@PublishedMethod(
+			params = "int pmid", 
+			methodSummary = "Returns the Domain Object Identifier (DOI) of a given pmid."
+
+	)
+	public String getDOI(int pmid)
+	throws IOException, BioclipseException, CoreException;
 }
