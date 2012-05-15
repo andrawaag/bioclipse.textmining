@@ -89,25 +89,16 @@ public interface IPubmedManager extends IBioclipseManager {
 			methodSummary = "Gets the PubMed abstract from a given pmid."
 
 	)
+	public String getPubMedTitle(int pmid)
+	throws IOException, BioclipseException, CoreException;
+
+	@Recorded
+	@PublishedMethod(
+			params = "int pmid", 
+			methodSummary = "Gets the PubMed abstract from a given pmid."
+
+	)
 	public String getPubMedAbstract(int pmid)
 	throws IOException, BioclipseException, CoreException;
 
-
-	@Recorded
-	@PublishedMethod(
-			params = "int pmid", 
-			methodSummary = "Returns the online resource where the pmid is cited through http://www.citedin.org"
-
-	)
-	public String citedIn(int pmid)
-	throws IOException, BioclipseException, CoreException;
-
-	@Recorded
-	@PublishedMethod(
-			params = "int pmid", 
-			methodSummary = "Returns the online resource where the pmid is cited through http://www.citedin.org"
-
-	)
-	public String availableFormats(int pmid)
-	throws IOException, BioclipseException, CoreException;
 }
