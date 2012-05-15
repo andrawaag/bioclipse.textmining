@@ -256,6 +256,52 @@ public class PubmedManager implements IBioclipseManager {
 		return pubmedMesh;
 
 	}
+	
+	public String getJournalAbbrevation(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList isoAbbreviationList = doc.getElementsByTagName("ISOAbbreviation");
+		String isoAbbreviation = "";
+		if (isoAbbreviationList.getLength() > 0){
+
+			for (int i=0; i<isoAbbreviationList.getLength(); i++){
+				isoAbbreviation = isoAbbreviation + isoAbbreviationList.item(i).getTextContent();
+			}
+		}
+
+		return isoAbbreviation;
+
+	}
+	
+	public String getChemicals(int pmid, IProgressMonitor monitor) throws IOException, BioclipseException, CoreException, ParserConfigurationException, SAXException{
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+
+		monitor.beginTask(
+				"Downloading PMID: " + pmid + " from PubMed (Eutils).", 2
+		);
+		Document doc = this.getPubmedEntryasDocument(pmid);
+		NodeList chemicalList = doc.getElementsByTagName("Chemical");
+		String chemicals = "";
+		if (chemicalList.getLength() > 0){
+
+			for (int i=0; i<chemicalList.getLength(); i++){
+				Element chemicalElement = (Element) chemicalList.item(i);
+				
+				chemicals = chemicals + chemicalElement.getElementsByTagName("NameOfSubstance").item(0).getTextContent()+": "+chemicalElement.getElementsByTagName("RegistryNumber").item(0).getTextContent()+"\n";
+			}
+		}
+
+		return chemicals;
+
+	}
 
 
 }
